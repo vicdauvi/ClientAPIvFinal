@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Villes</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<form method="post" action="GetDistancesServlet">
+		<label>Sélectionnez deux villes</label> <select id="selectVille1"
+			name="selectVille1"></select> <select id="selectVille2"
+			name="selectVille2"></select> <input type="submit"
+			value="calculer la distance" />
+	</form>
+	<a href="listVilles.html"><button>Liste des villes</button></a>
+	<script>
+	
+	var request = new XMLHttpRequest()
+	request.open('GET','http://localhost:8181/getvilles',true);
+	var txt,x="";
+	
+	
+	request.onreadystatechange = function(){
+	var data = JSON.parse(this.response);
+	var listeVille =[]
+	
+		if (request.status >= 200 && request.status < 400) {
+			
+	        data.forEach(ville => {
+	        	var newLength = listeVille.push(ville.nomCommune);
+	        })
+	      } else {
+	        console.log('error');
+	      }
+	      
+		const $select = document.getElementById("selectVille1")
+	
+		$select.innerHTML = "<option value=' '>Ville 1 </option>"; 
+		listeVille.forEach(listeVille=>{
+			const $opt = document.createElement("option");
+			$opt.value = listeVille; 
+			console.log(listeVille);
+			$opt.textContent = listeVille; 
+			$select.appendChild($opt);
+		})
+		
+		const $select2 = document.getElementById("selectVille2")
+	
+		$select2.innerHTML = "<option value=' '>Ville 2 </option>"; 
+		listeVille.forEach(listeVille=>{
+			const $opt = document.createElement("option");
+			$opt.value = listeVille; 
+			$opt.textContent = listeVille; 
+			$select2.appendChild($opt);
+		})
+		
+	    }
+	    
+	request.send()
+	console.log("Test") ;
+	window.alert("script ok");
+	</script>
+</body>
+</html>
